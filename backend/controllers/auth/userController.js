@@ -1,7 +1,4 @@
-import Joi from "joi";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
-import JwtService from "../../services/jwtService";
+
 import User from "../../models/user";
 import CustomErrorHandler from "../../services/CustomErrorHandler";
 

@@ -10,36 +10,36 @@ const refreshController = {
     const refreshSchema = Joi.object({
       refresh_token: Joi.string().required(),
     });
-    console.log('req.body');
     console.log(req.body);
     const { error } = refreshSchema.validate(req.body);
     if (error) {
-      console.log('req.body1');
       return next(error);
     }
-
+    let refreshToken;
     // check if refresh_token already exists
     try {
-      const refreshToken = await RefreshToken.findOne({
+      refreshToken = await RefreshToken.findOne({
         token: req.body.refresh_token,
       });
-      console.log('req.body2');
       if (!refreshToken) {
-        console.log('req.body3');
-        return next(CustomErrorHandler.unAuthorized("Unauthorized2"));
+        return next(CustomErrorHandler.unAuthorized("Unauthorized"));
       }
       let userId;
+      console.log("req.body3");
+      console.log(refreshToken);
       try {
-        const { _id } = await JwtService.verify(
+        const _id = await JwtService.verify(
           refreshToken.token,
           REFRESH_SECRET
         );
         userId = _id;
-        console.log(userId);
+        console.log('_id',_id);
       } catch (error) {
+        console.log("2 message");
+        console.log(err.message);
         return next(CustomErrorHandler.unAuthorized("Invalid refresh token"));
       }
-      const user = await User.findById({ id: userId });
+      const user = await User.findById({ _id: userId });
       if (!user) {
         return next(CustomErrorHandler.unAuthorized("no user found"));
       }
@@ -58,6 +58,8 @@ const refreshController = {
       await RefreshToken.create({ token: refresh_token });
       res.json({ access_token, refresh_token });
     } catch (err) {
+      console.log("1st message");
+      console.log(err.message);
       throw next(new Error("something went wrong" + err.message));
     }
   },
