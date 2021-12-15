@@ -28,12 +28,12 @@ const refreshController = {
       console.log("req.body3");
       console.log(refreshToken);
       try {
-        const _id = await JwtService.verify(
+        const { id } = await JwtService.verify(
           refreshToken.token,
           REFRESH_SECRET
         );
-        userId = _id;
-        console.log('_id',_id);
+        userId = id;
+        console.log("_id", id);
       } catch (error) {
         console.log("2 message");
         console.log(err.message);

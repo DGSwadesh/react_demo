@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import JwtService from "../../services/jwtService";
 import { RefreshToken, User } from "../../models";
 import CustomErrorHandler from "../../services/CustomErrorHandler";
-import {REFRESH_SECRET} from "../../config";
+import { REFRESH_SECRET } from "../../config";
 
 const loginController = {
   async login(req, res, next) {
@@ -51,6 +51,33 @@ const loginController = {
       // create refresh token
       await RefreshToken.create({ token: refresh_token });
       res.json({ access_token, refresh_token });
+    } catch (err) {
+      throw next(err);
+    }
+  },
+
+  // logOut
+  async logout(req, res, next) {
+    // validate request body
+    const refreshSchema = Joi.object({
+      refresh_token: Joi.string().required(),
+    });
+    console.log(req.body);
+    const { error } = refreshSchema.validate(req.body);
+    if (error) {
+      return next(error);
+    }
+    try {
+      const refreshToken = await RefreshToken.deleteOne({
+        token: req.body.refresh_token,
+      });
+      if (!refreshToken) {
+        return next(
+          CustomErrorHandler.wrongCradential("Refresh Token may wrong")
+        );
+      }
+      // await refreshToken.remove();
+      res.json({ message: "Logout Success" + refreshToken.user });
     } catch (err) {
       throw next(err);
     }

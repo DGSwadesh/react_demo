@@ -1,8 +1,9 @@
 import express from "express";
-import { APP_PORT, DB_URL } from "./config";
-import errorHandler from "./middleware/errorHandlres";
-import routes from "./routes";
+import { APP_PORT, DB_URL } from "./backend/config";
+import errorHandler from "./backend/middleware/errorHandlres";
+import routes from "./backend/routes";
 import mongoose from "mongoose";
+import path from "path";
 
 // mongoose connection
 
@@ -30,6 +31,8 @@ MongoDBconnection();
 // });
 
 const app = express();
+global.appRoot = path.resolve(__dirname);
+app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use("/api", routes);
 app.use(errorHandler);
