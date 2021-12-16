@@ -35,6 +35,8 @@ global.appRoot = path.resolve(__dirname);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use("/api", routes);
+app.use("/uploads", express.static('uploads'));
+
 app.use(errorHandler);
 app.listen(APP_PORT, () =>
   console.log(`Server is running on port ${APP_PORT}`)

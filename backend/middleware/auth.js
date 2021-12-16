@@ -12,10 +12,11 @@ const auth = async (req, res, next) => {
     const { id, role } = await JwtService.verify(token);
     const user = { id, role };
     req.user = user;
-    console.log('user');
-    console.log(user);
+    // console.log('user');
+    // console.log(user);
     next();
   } catch (err) {
+    console.log(err);
     return next(CustomErrorHandler.unAuthorized("Invalid token"));
   }
 };

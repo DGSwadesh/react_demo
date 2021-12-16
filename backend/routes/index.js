@@ -18,8 +18,10 @@ router.get("/me", auth, userController.me);
 router.post("/refreshToken", refreshController.refresh);
 router.post("/logout", auth, loginController.logout);
 
+router.get("/products", productController.index);
+router.get("/products/:id", productController.show);
 router.post("/products", auth, admin, productController.store);
 router.put("/products/:id", auth, admin, productController.update);
-router.delete("/products/:id", auth, admin, productController.update);
+router.delete("/products/:id", auth, admin, productController.delete);
 
 export default router;
