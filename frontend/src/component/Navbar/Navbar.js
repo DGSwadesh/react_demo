@@ -4,20 +4,25 @@ import styled from "styled-components";
 import { FaPizzaSlice } from "react-icons/fa";
 
 export const Nav = styled.nav`
-  background: red;
+  background: transparent;
   height: 80px;
+  width: 100%;
   display: flex;
   justify-content: center;
-  font-weight: 700;
+  font-weight: 700px;
+  padding: 10px
 `;
 
 export const NavLink = styled(Link)`
   color: #fff;
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   display: flex;
   align-items: center;
   text-decoration: none;
-  curson: pointer;
+  cursor: pointer;
+  font-family: Arial, Helvetica, sans-serif;
+  font-style: italic;
+  font-weight: bold;
 
   @media screen and (max-width: 400px) {
     position: absolute;
@@ -28,14 +33,17 @@ export const NavLink = styled(Link)`
 
 export const NavIcon = styled.div`
   display: block;
-  positioned: absolute;
+  float: right;
+  position: absolute;
   top: 0;
   right: 0;
   cursor: pointer;
   color: #fff;
+  transform: translate(90%);
   p {
-    transform: tranlate(-175%, 100%);
-    font-size: bold;
+    // transform: translate(10px);
+    font-style: italic;
+    font-weight: bold;
   }
 `;
 
