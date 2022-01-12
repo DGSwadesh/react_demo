@@ -4,40 +4,33 @@ import errorHandler from "./backend/middleware/errorHandlres";
 import routes from "./backend/routes";
 import mongoose from "mongoose";
 import path from "path";
+import { createPool } from "mysql";
 
-// mongoose connection
-
-const MongoDBconnection = async () => {
-  try {
-    await mongoose.connect(DB_URL, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log("MongoDB connected");
-  } catch (error) {
-    console.log(error);
+const pool = createPool({
+  host: "localhost",
+  database: "node_test",
+  user: "root",
+  password: "",
+  connectionLimit: 10,
+});
+pool.query("select * from users", (err, result, field) => {
+  if (err) {
+    return console.log(err);
   }
-};
-MongoDBconnection();
-// mongoose.connect(DB_URL, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-//   // usefindAndModify: false,
-// });
-// const db = mongoose.connection;
-// db.on("error", console.error.bind(console, "connection error:"));
-// db.once("open", () => {
-//   console.log("Connected to MongoDB");
-// });
+  return console.log(result);
+});
+
 
 const app = express();
 global.appRoot = path.resolve(__dirname);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use("/api", routes);
-app.use("/uploads", express.static('uploads'));
+app.use("/uploads", express.static("uploads"));
 
 app.use(errorHandler);
 app.listen(APP_PORT, () =>
   console.log(`Server is running on port ${APP_PORT}`)
 );
+
+
