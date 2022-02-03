@@ -1,5 +1,5 @@
 import express from "express";
-import { APP_PORT, DB_URL } from "./backend/config";
+import { APP_PORT, DB_URL } from "./server/config";
 import errorHandler from "./backend/middleware/errorHandlres";
 import routes from "./backend/routes";
 import mongoose from "mongoose";
